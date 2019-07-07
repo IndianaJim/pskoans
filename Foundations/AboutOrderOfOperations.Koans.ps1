@@ -16,33 +16,33 @@ param()
 #>
 Describe "Order of Operations" {
 
-    It "requires parameter argument expressions to be enclosed in parentheses" {
-        function Add-Numbers {
-            param(
-                [int]
-                $Number1,
-                [int]
-                $Number2
-            )
-            return $Number1 + $Number2
-        }
-        # Be wary of open spaces when passing an expression as a function argument.
-        $Sum = Add-Numbers (4 + 1) 18
-        __ | Should -Be $Sum
-        Add-Numbers 3 * 4 7 | Should -Be 19 # Add parentheses to the function call to make this true.
+  It "requires parameter argument expressions to be enclosed in parentheses" {
+    function Add-Numbers {
+      param(
+        [int]
+        $Number1,
+        [int]
+        $Number2
+      )
+      return $Number1 + $Number2
     }
+    # Be wary of open spaces when passing an expression as a function argument.
+    $Sum = Add-Numbers (4 + 1) 18
+    23 | Should -Be $Sum
+    Add-Numbers (3 * 4) 7 | Should -Be 19 # Add parentheses to the function call to make this true.
+  }
 
-    It "will evaluate an entire expression if it is the first element in a pipeline" {
-        # A pipe character evaluates everything before it on the line before
-        # passing along the value(s).
-        __ + 7 | Should -Be 11
-        __ * 3 + 11 | Should -Be 35
-    }
+  It "will evaluate an entire expression if it is the first element in a pipeline" {
+    # A pipe character evaluates everything before it on the line before
+    # passing along the value(s).
+    4 + 7 | Should -Be 11
+    8 * 3 + 11 | Should -Be 35
+  }
 
-    It "otherwise follows standard mathematical rules" {
-        # Although PowerShell doesn't have a native exponentiation operator,
-        # we do have [Math]::Pow($base, $power)
-        $Value = 3 + 4 / [Math]::Pow(2, 3)
-        __ | Should -Be $Value
-    }
+  It "otherwise follows standard mathematical rules" {
+    # Although PowerShell doesn't have a native exponentiation operator,
+    # we do have [Math]::Pow($base, $power)
+    $Value = 3 + 4 / [Math]::Pow(2, 3)
+    3.5 | Should -Be $Value
+  }
 }
